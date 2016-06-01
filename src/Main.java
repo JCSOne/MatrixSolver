@@ -20,55 +20,74 @@ public class Main {
                         int[][] firstMatrix, secondMatrix;
 
                         JOptionPane.showMessageDialog(menu, "Primera matriz");
-                        firstMatrix = GetMatrix();
+                        firstMatrix = getMatrix();
 
                         JOptionPane.showMessageDialog(menu, "Segunda matriz");
-                        secondMatrix = GetMatrix();
+                        secondMatrix = getMatrix();
 
-                        PrintMatrix(Multiply(firstMatrix, secondMatrix));
+                        int[][] result = Operations.multiply(firstMatrix, secondMatrix);
+                        if (result != null) {
+                            printMatrix(result);
+                        } else {
+                            JOptionPane.showMessageDialog(menu, "Las matrices no se pueden operar");
+                        }
                     }
                     break;
                     case 2: {
                         int[][] firstMatrix, secondMatrix;
 
                         JOptionPane.showMessageDialog(menu, "Primera matriz");
-                        firstMatrix = GetMatrix();
+                        firstMatrix = getMatrix();
 
                         JOptionPane.showMessageDialog(menu, "Segunda matriz");
-                        secondMatrix = GetMatrix();
+                        secondMatrix = getMatrix();
 
-                        PrintMatrix(Add(firstMatrix, secondMatrix));
+                        int[][] result = Operations.add(firstMatrix, secondMatrix);
+                        if (result != null) {
+                            printMatrix(result);
+                        } else {
+                            JOptionPane.showMessageDialog(menu, "Las matrices no se pueden operar");
+                        }
                     }
                     break;
                     case 3: {
                         int[][] firstMatrix, secondMatrix;
                         JOptionPane.showMessageDialog(menu, "Primera matriz");
-                        firstMatrix = GetMatrix();
+                        firstMatrix = getMatrix();
 
                         JOptionPane.showMessageDialog(menu, "Segunda matriz");
-                        secondMatrix = GetMatrix();
+                        secondMatrix = getMatrix();
 
-                        PrintMatrix(Substract(firstMatrix, secondMatrix));
+                        int[][] result = Operations.subtract(firstMatrix, secondMatrix);
+                        if (result != null) {
+                            printMatrix(result);
+                        } else {
+                            JOptionPane.showMessageDialog(menu, "Las matrices no se pueden operar");
+                        }
                     }
                     break;
                     case 4: {
                         JOptionPane.showMessageDialog(menu, "Matriz");
-                        PrintMatrix(Transpose(GetMatrix()));
+                        printMatrix(Operations.transpose(getMatrix()));
                     }
                     break;
                     case 5: {
                         int[][] matrix;
                         JOptionPane.showMessageDialog(menu, "Matriz");
-                        matrix = GetMatrix();
+                        matrix = getMatrix();
 
-                        JOptionPane.showMessageDialog(menu, "El determinante de la matriz es: " + Determinant(matrix));
+                        if (matrix.length == matrix[0].length) {
+                            JOptionPane.showMessageDialog(menu, "El determinante de la matriz es: " + Operations.determinant(matrix));
+                        } else {
+                            JOptionPane.showMessageDialog(menu, "La matriz no es una matriz cuadrada");
+                        }
                     }
                     break;
                     case 6: {
                         int scalar = Integer.parseInt(javax.swing.JOptionPane.showInputDialog("Ingrese el valor del escalar"));
                         JOptionPane.showMessageDialog(menu, "Matriz");
 
-                        PrintMatrix(Multiply(GetMatrix(), scalar));
+                        printMatrix(Operations.multiply(getMatrix(), scalar));
                     }
                     break;
                     case 7:
@@ -84,14 +103,13 @@ public class Main {
         } while (opcion != 6);
     }
 
-    private static int[][] GetMatrix() {
+    private static int[][] getMatrix() {
         int x, y;
         x = Integer.parseInt(javax.swing.JOptionPane.showInputDialog("Ingrese el número de filas"));
         y = Integer.parseInt(javax.swing.JOptionPane.showInputDialog("Ingrese el número de columnas"));
 
         int[][] result = new int[x][y];
         try {
-
             for (int i = 0; i < x; i++) {
                 for (int j = 0; j < y; j++) {
                     result[i][j] = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el valor de la matriz en (" + (i + 1) + ", " + (j + 1) + ")"));
@@ -104,87 +122,7 @@ public class Main {
         return result;
     }
 
-    private static int[][] Multiply(int[][] firstMatrix, int[][] secondMatrix) {
-        int[][] result = new int[firstMatrix.length][secondMatrix[0].length];
-        for (int i = 0; i < firstMatrix.length; i++) {
-            for (int j = 0; j < secondMatrix[0].length; j++) {
-                for (int k = 0; k < firstMatrix[0].length; k++) {
-                    result[i][j] += firstMatrix[i][k] * secondMatrix[k][j];
-                }
-            }
-        }
-        return result;
-    }
-
-    private static int[][] Multiply(int[][] matrix, int scalar) {
-        int[][] result = new int[matrix.length][matrix[0].length];
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                result[i][j] = matrix[i][j] * scalar;
-            }
-        }
-        return result;
-    }
-
-    private static int[][] Add(int[][] firstMatrix, int[][] secondMatrix) {
-        int[][] result = new int[firstMatrix.length][firstMatrix[0].length];
-        for (int i = 0; i < firstMatrix.length; i++) {
-            for (int j = 0; j < firstMatrix[0].length; j++) {
-                result[i][j] = firstMatrix[i][j] + secondMatrix[i][j];
-            }
-        }
-        return result;
-    }
-
-    private static int[][] Substract(int[][] firstMatrix, int[][] secondMatrix) {
-        int[][] result = new int[firstMatrix.length][firstMatrix[0].length];
-        for (int i = 0; i < firstMatrix.length; i++) {
-            for (int j = 0; j < firstMatrix[0].length; j++) {
-                result[i][j] = firstMatrix[i][j] - secondMatrix[i][j];
-            }
-        }
-        return result;
-    }
-
-    private static int[][] Transpose(int[][] matrix) {
-        int[][] result = new int[matrix[0].length][matrix.length];
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                result[j][i] = matrix[i][j];
-            }
-        }
-        return result;
-    }
-
-    private static int Determinant(int[][] matrix) {
-        int result = 0, sign = 1, p, q;
-
-        if (matrix.length == 1) {
-            result = matrix[0][0];
-        } else {
-            int smallMatrix[][] = new int[matrix.length - 1][matrix.length - 1];
-            for (int i = 0; i < matrix.length; i++) {
-                p = 0;
-                q = 0;
-                for (int j = 1; j < matrix.length; j++) {
-                    for (int k = 0; k < matrix.length; k++) {
-                        if (k != i) {
-                            smallMatrix[p][q++] = matrix[j][k];
-                            if (q % (matrix.length - 1) == 0) {
-                                p++;
-                                q = 0;
-                            }
-                        }
-                    }
-                }
-                result = result + matrix[0][i] * Determinant(smallMatrix) * sign;
-                sign = -sign;
-            }
-        }
-        return result;
-    }
-
-    private static void PrintMatrix(int[][] matrix) {
+    private static void printMatrix(int[][] matrix) {
         String result = "";
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
