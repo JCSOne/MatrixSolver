@@ -1,8 +1,5 @@
 import javax.swing.*;
 
-/**
- * Created by JCS on 19/04/16.
- */
 public class Main {
     static JFrame menu = new JFrame();
 

@@ -1,6 +1,3 @@
-/**
- * Created by JCS on 1/06/16.
- */
 public class Operations {
     public static int[][] multiply(int[][] firstMatrix, int[][] secondMatrix) {
         if (firstMatrix.length == secondMatrix[0].length) {
