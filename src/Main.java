@@ -118,7 +118,15 @@ public class Main {
         try {
             for (int i = 0; i < result.length; i++) {
                 for (int j = 0; j < result[0].length; j++) {
-                    result[i][j] = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el valor de la matriz en (" + (i + 1) + ", " + (j + 1) + ")"));
+                    boolean isNotInt = true;
+                    while (isNotInt) {
+                        try {
+                            result[i][j] = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el valor de la matriz en (" + (i + 1) + ", " + (j + 1) + ")"));
+                            isNotInt = false;
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(menu, "Solo puede ingresar valores númericos");
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
