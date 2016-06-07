@@ -81,7 +81,7 @@ public class Operations {
                         }
                     }
                 }
-                result = result + matrix[0][i] * determinant(smallMatrix) * sign;
+                result += matrix[0][i] * determinant(smallMatrix) * sign;
                 sign = -sign;
             }
         }
